@@ -1,5 +1,5 @@
 cmake-build-*
 build
-test
+**/test
 **/.idea
 **/.vscode

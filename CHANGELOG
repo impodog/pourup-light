@@ -1,2 +1,8 @@
+v0.1.0
+- Allow to use environ as a item
+- Add puppy-light(ppyl) language
+- Fix bugs when creating a new item
+- Improve other code details
+
 v0.0.1
 - Add basic functionalities for PUPL

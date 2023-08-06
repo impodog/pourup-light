@@ -7,6 +7,7 @@
 
 #include "stdio.h"
 #include "stdlib.h"
+#include "stdint.h"
 #include "string.h"
 #include "ctype.h"
 #include "limits.h"
@@ -19,7 +20,7 @@ extern "C" {
 
 #define PUPL_MAX_LINE_LENGTH 1024
 
-#define PUPL_VERSION "0.0.1"
+#define PUPL_VERSION "0.1.0"
 
 
 typedef char PUPL_Operator;

@@ -15,9 +15,9 @@ typedef struct PUPL_Environ_ *PUPL_Environ;
 typedef PUPL_Environ *PUPL_EnvironVec;
 struct PUPL_Environ_ {
     PUPL_HashMap items;
-    PUPL_HashMap sub;
 
     PUPL_ItemVec stack;
+    PUPL_Item result_v, left_bracket_v;
 };
 
 PUPL_Environ PUPL_Environ_new();
@@ -35,6 +35,16 @@ PUPL_Item PUPL_Environ_find(PUPL_Environ env, PUPL_ConstString key);
 /*This function may return NULL when the key does not exist.
  * Remember that this DOES return a copy of the value*/
 PUPL_Item PUPL_Environ_find_value(PUPL_Environ env, PUPL_ConstString key);
+
+void PUPL_Environ_push_stack(PUPL_Environ env, PUPL_Item item);
+
+PUPL_Item PUPL_Environ_pull_stack(PUPL_Environ env);
+
+void PUPL_Environ_set_result(PUPL_Environ env, PUPL_Item item);
+
+PUPL_Item PUPL_Environ_get_result(PUPL_Environ env);
+
+void PUPL_Environ_set_left_bracket(PUPL_Environ env, PUPL_Item item);
 
 void PUPL_Environ_show(PUPL_Environ env);
 

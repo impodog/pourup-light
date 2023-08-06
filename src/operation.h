@@ -11,16 +11,12 @@
 extern "C" {
 #endif
 
-typedef PUPL_Bool (*PUPL_Operation)(PUPL_CallStack call_stack, PUPL_String arg);
+typedef PUPL_Bool (*PUPL_Operation)(PUPL_CallStack call_stack, PUPL_ConstString arg);
 
 typedef PUPL_Bool (*PUPL_Function)(PUPL_CallStack call_stack);
 
 typedef PUPL_Operation *PUPL_OperationTable;
 typedef hashmap *PUPL_FunctionMap;
-
-void PUPL_set_error(const char *msg);
-
-const char *PUPL_get_error();
 
 void PUPL_Operation_init();
 
@@ -40,6 +36,12 @@ PUPL_Function PUPL_FunctionMap_add(PUPL_ConstString name, PUPL_Function function
 
 /* Returns NULL on failure(function not found) */
 PUPL_Function PUPL_FunctionMap_find(PUPL_ConstString name);
+
+
+
+void PUPL_set_error(const char *msg);
+
+const char *PUPL_get_error();
 
 #ifdef __cplusplus
 };

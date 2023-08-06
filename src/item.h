@@ -24,7 +24,8 @@ enum PUPL_ItemType {
     PUPL_BOOL_T,
     PUPL_NULL_T,
     PUPL_STRING_T,
-    PUPL_ARRAY_T
+    PUPL_ARRAY_T,
+    PUPL_ENVIRON_PTR_T
 };
 
 struct PUPL_Item_ {
@@ -36,6 +37,7 @@ struct PUPL_Item_ {
         PUPL_Bool bool_v;
         PUPL_String string_v;
         PUPL_Array array_v;
+        PUPL_Ptr environ_ptr_v;
     } value;
 };
 
@@ -52,6 +54,14 @@ PUPL_Item PUPL_Item_new_null();
 PUPL_Item PUPL_Item_new_string(PUPL_ConstString value);
 
 PUPL_Item PUPL_Item_new_array(PUPL_Array value);
+
+PUPL_Item PUPL_Item_new_environ_ptr(PUPL_Ptr value);
+
+PUPL_Ptr PUPL_Item_copy_environ_ptr(PUPL_Ptr ptr);
+
+void PUPL_Item_free_environ_ptr(PUPL_Ptr ptr);
+
+void PUPL_Item_show_environ_ptr(PUPL_Ptr ptr);
 
 PUPL_Item PUPL_Item_copy(PUPL_Item item);
 

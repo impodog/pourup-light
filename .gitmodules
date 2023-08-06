@@ -4,3 +4,6 @@
 [submodule "src/c-hashmap"]
 	path = src/c-hashmap
 	url = https://github.com/Mashpoe/c-hashmap.git
+[submodule "ppyl/argparse"]
+	path = ppyl/argparse
+	url = https://github.com/p-ranav/argparse.git

@@ -12,29 +12,34 @@ PUPL_Item PUPL_Item_new_integer(PUPL_Integer value) {
     PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
     item->type = PUPL_INTEGER_T;
     item->value.integer_v = value;
+    return item;
 }
 
 PUPL_Item PUPL_Item_new_ptr(PUPL_Ptr value) {
     PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
     item->type = PUPL_PTR_T;
     item->value.ptr_v = value;
+    return item;
 }
 
 PUPL_Item PUPL_Item_new_float(PUPL_Float value) {
     PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
     item->type = PUPL_FLOAT_T;
     item->value.float_v = value;
+    return item;
 }
 
 PUPL_Item PUPL_Item_new_bool(PUPL_Bool value) {
     PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
     item->type = PUPL_BOOL_T;
     item->value.bool_v = value;
+    return item;
 }
 
 PUPL_Item PUPL_Item_new_null() {
     PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
     item->type = PUPL_NULL_T;
+    return item;
 }
 
 PUPL_Item PUPL_Item_new_string(PUPL_ConstString value) {
@@ -50,6 +55,14 @@ PUPL_Item PUPL_Item_new_array(PUPL_Array value) {
     PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
     item->type = PUPL_ARRAY_T;
     item->value.array_v = value;
+    return item;
+}
+
+PUPL_Item PUPL_Item_new_environ_ptr(PUPL_Ptr value) {
+    PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
+    item->type = PUPL_ENVIRON_PTR_T;
+    item->value.environ_ptr_v = value;
+    return item;
 }
 
 PUPL_Item PUPL_Item_copy(PUPL_Item item) {
@@ -84,6 +97,9 @@ PUPL_Item PUPL_Item_copy(PUPL_Item item) {
                     }
                 }
                 break;
+            case PUPL_ENVIRON_PTR_T:
+                new_item->value.environ_ptr_v = PUPL_Item_copy_environ_ptr(item->value.environ_ptr_v);
+                break;
         }
         return new_item;
     }
@@ -91,21 +107,26 @@ PUPL_Item PUPL_Item_copy(PUPL_Item item) {
 }
 
 void PUPL_Item_free(PUPL_Item item) {
-    switch (item->type) {
-        case PUPL_INTEGER_T:
-        case PUPL_PTR_T:
-        case PUPL_FLOAT_T:
-        case PUPL_BOOL_T:
-        case PUPL_NULL_T:
-            break;
-        case PUPL_STRING_T:
-            free(item->value.string_v);
-            break;
-        case PUPL_ARRAY_T:
-            PUPL_Array_free(item->value.array_v);
-            break;
+    if (item) {
+        switch (item->type) {
+            case PUPL_INTEGER_T:
+            case PUPL_PTR_T:
+            case PUPL_FLOAT_T:
+            case PUPL_BOOL_T:
+            case PUPL_NULL_T:
+                break;
+            case PUPL_STRING_T:
+                free(item->value.string_v);
+                break;
+            case PUPL_ARRAY_T:
+                PUPL_Array_free(item->value.array_v);
+                break;
+            case PUPL_ENVIRON_PTR_T:
+                PUPL_Item_free_environ_ptr(item->value.environ_ptr_v);
+                break;
+        }
+        free(item);
     }
-    free(item);
 }
 
 void PUPL_Item_show(PUPL_Item item) {
@@ -140,6 +161,11 @@ void PUPL_Item_show(PUPL_Item item) {
             }
             printf("]");
         }
+            break;
+        case PUPL_ENVIRON_PTR_T:
+            puts("{");
+            PUPL_Item_show_environ_ptr(item->value.environ_ptr_v);
+            putchar('}');
             break;
     }
 }
