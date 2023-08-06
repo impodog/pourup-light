@@ -147,7 +147,7 @@ void PUPL_Item_show(PUPL_Item item) {
             printf("null");
             break;
         case PUPL_STRING_T:
-            printf("$%s$", item->value.string_v);
+            printf("\"%s\"", item->value.string_v);
             break;
         case PUPL_ARRAY_T: {
             size_t i, length;
@@ -163,9 +163,7 @@ void PUPL_Item_show(PUPL_Item item) {
         }
             break;
         case PUPL_ENVIRON_PTR_T:
-            puts("{");
             PUPL_Item_show_environ_ptr(item->value.environ_ptr_v);
-            putchar('}');
             break;
     }
 }

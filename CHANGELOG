@@ -1,3 +1,10 @@
+v0.2.0
+- Allow using positive and negative numbers
+- Add macros and json parser for ppyl compiler
+- Add ppyl vscode extension
+- Change function call '&' to '.'
+- Other fixes in ppyl
+
 v0.1.0
 - Allow to use environ as a item
 - Add puppy-light(ppyl) language

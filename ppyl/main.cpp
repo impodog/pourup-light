@@ -18,6 +18,11 @@ int main(int argc, char **argv) {
     } else {
         output = src.parent_path() / (src.stem().string() + ".pupl");
     }
+    if (src.extension() == ".json") {
+        std::filesystem::path json_output = src.parent_path() / (src.stem().string() + ".ppyl");
+        ppyl::json_work(src, json_output);
+        src = json_output;
+    }
     ppyl::work(src, output);
     return 0;
 }

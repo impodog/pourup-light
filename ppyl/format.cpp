@@ -18,7 +18,7 @@ namespace ppyl {
                     is_escape = true;
                     break;
                 case '"':
-                    if (in_string) {
+                    if (!in_string) {
                         result.push_back('$');
                     }
                 case '\'': //fallthrough

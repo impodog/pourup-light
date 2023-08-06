@@ -93,13 +93,17 @@ PUPL_Item PUPL_Environ_find_value(PUPL_Environ env, PUPL_ConstString key) {
             }
         case '0':
             return PUPL_Item_new_ptr(strtoll(key + 1, NULL, 16));
+        case '-':
+        case '+':
+        number:
+            if (PUPL_String_contains(key, '.')) {
+                return PUPL_Item_new_float(strtod(key, NULL));
+            } else {
+                return PUPL_Item_new_integer(strtoll(key, NULL, 10));
+            }
         default:
             if (isdigit(key[0])) {
-                if (PUPL_String_contains(key, '.')) {
-                    return PUPL_Item_new_float(strtod(key, NULL));
-                } else {
-                    return PUPL_Item_new_integer(strtoll(key, NULL, 10));
-                }
+                goto number;
             } else {
                 return PUPL_Item_copy(PUPL_Environ_find(env, key));
             }
@@ -145,8 +149,9 @@ void PUPL_Environ_show_sub(void *key, size_t ksize, uintptr_t value, void *usr) 
 }
 
 void PUPL_Environ_show(PUPL_Environ env) {
-    printf("PUPL_Environ 0x%llx:\n", (uintptr_t) env);
+    puts("{");
     hashmap_iterate(env->items, PUPL_Environ_show_item, NULL);
+    putchar('}');
 }
 
 void PUPL_Environ_copy_item(void *key, size_t ksize, uintptr_t value, void *usr) {

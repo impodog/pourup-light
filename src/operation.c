@@ -143,7 +143,7 @@ void PUPL_Operation_init() {
     PUPL_operations['S'] = PUPL_op_show;
     PUPL_operations['{'] = PUPL_op_stack_enter;
     PUPL_operations['}'] = PUPL_op_stack_leave;
-    PUPL_operations['&'] = PUPL_op_run_function;
+    PUPL_operations['.'] = PUPL_op_run_function;
     PUPL_operations['['] = PUPL_op_left_bracket;
     PUPL_operations[']'] = PUPL_op_right_bracket;
     PUPL_operations['='] = PUPL_op_return;

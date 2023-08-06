@@ -1,0 +1,25 @@
+{
+  "name": "puppy-light-highlights",
+  "displayName": "Puppy-Light Highlights",
+  "description": "Highlights some Puppy-Light syntax",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "ppyl",
+      "aliases": ["Puppy-Light", "ppyl"],
+      "extensions": [".ppyl",".puppyl"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "ppyl",
+      "scopeName": "source.ppyl",
+      "path": "./syntaxes/ppyl.tmLanguage.json"
+    }]
+  }
+}

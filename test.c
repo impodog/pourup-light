@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
         printf("Usage: %s <file>\n", argv[0]);
         return 1;
     }
-    system(PPYL " test/test.ppyl");
+    system(PPYL " test/test.json");
     PUPL_init();
     PUPL_CallStack call_stack = PUPL_parse(argv[1]);
     if (call_stack == NULL) {
