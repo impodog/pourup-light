@@ -8,6 +8,7 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <unordered_map>
 
 #define PPYL_RESERVED "__"
 

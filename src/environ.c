@@ -55,7 +55,7 @@ PUPL_Environ PUPL_Environ_sub(PUPL_Environ env, PUPL_ConstString key) {
         }
     } else {
         PUPL_Environ sub = PUPL_Environ_new();
-        hashmap_set(env->items, key, strlen(key), (uintptr_t) PUPL_Item_new_environ_ptr((uintptr_t) sub));
+        hashmap_set(env->items, strdup(key), strlen(key), (uintptr_t) PUPL_Item_new_environ_ptr((uintptr_t) sub));
         return sub;
     }
 }

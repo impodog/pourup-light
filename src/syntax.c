@@ -21,7 +21,7 @@ PUPL_Command PUPL_Command_new(PUPL_ConstString line, size_t length) {
     // The length is the length of the string, not the length of the memory.
     // To copy the NUL character, length is not subtracted by 1.
     result->operand = (PUPL_String) malloc(length);
-    strcpy_s(result->operand, length, line + pos + 1);
+    memcpy(result->operand, line + pos + 1, length - pos);
     return result;
 }
 

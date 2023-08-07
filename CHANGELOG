@@ -1,3 +1,9 @@
+v0.3.1
+- Tested on Mac.
+- Add friendly macros for string.h functions
+- Fix a memory issue as environ hashmap keys are duplicated
+- Fix strcpy_s mistakenly used as memcpy is syntax.c
+
 v0.3.0
 - Add README.md
 - Fix some memory leaks in pupl and add more comments

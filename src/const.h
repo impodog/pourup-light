@@ -14,13 +14,20 @@
 #include "c-vector/vec.h"
 #include "c-hashmap/map.h"
 
+#ifndef strcpy_s
+#define strcpy_s strncpy
+#endif
+#ifndef sprintf_s
+#define sprintf_s snprintf
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #define PUPL_MAX_LINE_LENGTH 1024
 
-#define PUPL_VERSION "0.3.0"
+#define PUPL_VERSION "0.3.1"
 
 
 typedef char PUPL_Operator;
