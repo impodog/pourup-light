@@ -18,11 +18,8 @@ PUPL_Environ PUPL_Environ_new() {
 }
 
 void PUPL_Environ_item_free(void *key, size_t ksize, uintptr_t value, void *usr) {
+    free(key);
     PUPL_Item_free((PUPL_Item) value);
-}
-
-void PUPL_Environ_sub_free(void *key, size_t ksize, uintptr_t value, void *usr) {
-    PUPL_Environ_free((PUPL_Environ) value);
 }
 
 void PUPL_Environ_free(PUPL_Environ env) {
@@ -44,7 +41,7 @@ void PUPL_Environ_set(PUPL_Environ env, PUPL_ConstString key, PUPL_Item value) {
     if (hashmap_get(env->items, key, key_len, &prev)) {
         PUPL_Item_free((PUPL_Item) prev);
     }
-    hashmap_set(env->items, key, key_len, (uintptr_t) value);
+    hashmap_set(env->items, strdup(key), key_len, (uintptr_t) value);
 }
 
 PUPL_Environ PUPL_Environ_sub(PUPL_Environ env, PUPL_ConstString key) {
@@ -61,6 +58,25 @@ PUPL_Environ PUPL_Environ_sub(PUPL_Environ env, PUPL_ConstString key) {
         hashmap_set(env->items, key, strlen(key), (uintptr_t) PUPL_Item_new_environ_ptr((uintptr_t) sub));
         return sub;
     }
+}
+
+void PUPL_Environ_copy_item(void *key, size_t ksize, uintptr_t value, void *usr) {
+    PUPL_Environ_set((PUPL_Environ) usr, (PUPL_ConstString) key, PUPL_Item_copy((PUPL_Item) value));
+}
+
+PUPL_Environ PUPL_Environ_new_copy(PUPL_Environ env) {
+    PUPL_Environ copy = PUPL_Environ_new();
+    hashmap_iterate(env->items, PUPL_Environ_copy_item, copy);
+    return copy;
+}
+
+PUPL_Environ PUPL_Environ_sub_copy(PUPL_Environ env, PUPL_Environ src, PUPL_ConstString key) {
+    PUPL_Environ sub = PUPL_Environ_sub(env, key);
+    if (sub) {
+        hashmap_iterate(src->items, PUPL_Environ_copy_item, sub);
+        return sub;
+    }
+    return NULL;
 }
 
 PUPL_Item PUPL_Environ_find(PUPL_Environ env, PUPL_ConstString key) {
@@ -91,7 +107,7 @@ PUPL_Item PUPL_Environ_find_value(PUPL_Environ env, PUPL_ConstString key) {
                 default:
                     return NULL;
             }
-        case '0':
+        case '&':
             return PUPL_Item_new_ptr(strtoll(key + 1, NULL, 16));
         case '-':
         case '+':
@@ -99,7 +115,7 @@ PUPL_Item PUPL_Environ_find_value(PUPL_Environ env, PUPL_ConstString key) {
             if (PUPL_String_contains(key, '.')) {
                 return PUPL_Item_new_float(strtod(key, NULL));
             } else {
-                return PUPL_Item_new_integer(strtoll(key, NULL, 10));
+                return PUPL_Item_new_int(strtoll(key, NULL, 10));
             }
         default:
             if (isdigit(key[0])) {
@@ -115,9 +131,13 @@ void PUPL_Environ_push_stack(PUPL_Environ env, PUPL_Item item) {
 }
 
 PUPL_Item PUPL_Environ_pull_stack(PUPL_Environ env) {
-    PUPL_Item result = env->stack[vector_size(env->stack) - 1];
-    vector_pop(env->stack);
-    return result;
+    size_t length = vector_size(env->stack);
+    if (length) {
+        PUPL_Item result = env->stack[length - 1];
+        vector_pop(env->stack);
+        return result;
+    }
+    return NULL;
 }
 
 void PUPL_Environ_set_result(PUPL_Environ env, PUPL_Item item) {
@@ -137,13 +157,14 @@ void PUPL_Environ_set_left_bracket(PUPL_Environ env, PUPL_Item item) {
 }
 
 void PUPL_Environ_show_item(void *key, size_t ksize, uintptr_t value, void *usr) {
-    printf("%s: ", (PUPL_ConstString) key);
+    printf("'%s': ", (PUPL_ConstString) key);
     PUPL_Item_show((PUPL_Item) value);
     putchar('\n');
 }
 
+/* DEPRECATED */
 void PUPL_Environ_show_sub(void *key, size_t ksize, uintptr_t value, void *usr) {
-    printf("%s: {\n", (PUPL_ConstString) key);
+    printf("'%s': {\n", (PUPL_ConstString) key);
     PUPL_Environ_show((PUPL_Environ) value);
     puts("}");
 }
@@ -154,20 +175,8 @@ void PUPL_Environ_show(PUPL_Environ env) {
     putchar('}');
 }
 
-void PUPL_Environ_copy_item(void *key, size_t ksize, uintptr_t value, void *usr) {
-    PUPL_Environ_set((PUPL_Environ) usr, (PUPL_ConstString) key, PUPL_Item_copy((PUPL_Item) value));
-}
-
-void PUPL_Environ_copy_sub(void *key, size_t ksize, uintptr_t value, void *usr) {
-    PUPL_Environ_set((PUPL_Environ) usr, (PUPL_ConstString) key,
-                     PUPL_Item_new_environ_ptr(PUPL_Item_copy_environ_ptr((PUPL_Ptr) value)));
-}
-
 PUPL_Ptr PUPL_Item_copy_environ_ptr(PUPL_Ptr ptr) {
-    PUPL_Environ env = PUPL_Environ_new();
-    PUPL_Environ src = (PUPL_Environ) ptr;
-    hashmap_iterate(src->items, PUPL_Environ_copy_item, env);
-    return (PUPL_Ptr) env;
+    return (PUPL_Ptr) PUPL_Environ_new_copy((PUPL_Environ) ptr);
 }
 
 void PUPL_Item_free_environ_ptr(PUPL_Ptr ptr) {
@@ -213,11 +222,15 @@ PUPL_Environ PUPL_CallStack_get(PUPL_CallStack call_stack, size_t index) {
 }
 
 PUPL_Environ PUPL_CallStack_top(PUPL_CallStack call_stack) {
-    return call_stack->stack[vector_size(call_stack->stack) - 1];
+    return call_stack->stack[PUPL_CallStack_size(call_stack) - 1];
 }
 
 PUPL_Environ PUPL_CallStack_bottom(PUPL_CallStack call_stack) {
     return call_stack->stack[0];
+}
+
+size_t PUPL_CallStack_size(PUPL_CallStack call_stack) {
+    return vector_size(call_stack->stack);
 }
 
 #ifdef __cplusplus

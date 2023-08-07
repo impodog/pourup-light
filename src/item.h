@@ -18,7 +18,7 @@ typedef PUPL_Item *PUPL_Array;
 typedef PUPL_Array PUPL_ItemVec;
 
 enum PUPL_ItemType {
-    PUPL_INTEGER_T,
+    PUPL_INT_T,
     PUPL_PTR_T,
     PUPL_FLOAT_T,
     PUPL_BOOL_T,
@@ -31,7 +31,7 @@ enum PUPL_ItemType {
 struct PUPL_Item_ {
     enum PUPL_ItemType type;
     union {
-        PUPL_Integer integer_v;
+        PUPL_Int int_v;
         PUPL_Ptr ptr_v;
         PUPL_Float float_v;
         PUPL_Bool bool_v;
@@ -41,7 +41,7 @@ struct PUPL_Item_ {
     } value;
 };
 
-PUPL_Item PUPL_Item_new_integer(PUPL_Integer value);
+PUPL_Item PUPL_Item_new_int(PUPL_Int value);
 
 PUPL_Item PUPL_Item_new_ptr(PUPL_Ptr value);
 
@@ -53,6 +53,8 @@ PUPL_Item PUPL_Item_new_null();
 
 PUPL_Item PUPL_Item_new_string(PUPL_ConstString value);
 
+/* This function does NOT copy the array, it just copys the pointer to the array.
+ * You should NOT free the array after calling this function. */
 PUPL_Item PUPL_Item_new_array(PUPL_Array value);
 
 PUPL_Item PUPL_Item_new_environ_ptr(PUPL_Ptr value);
@@ -73,6 +75,8 @@ PUPL_Array PUPL_Array_new();
 
 void PUPL_Array_push(PUPL_Array *array, PUPL_Item item);
 
+/* NOTE: This function DOES free the items in the array.
+ * Also, after calling PUPL_Item_new_array, you should NOT free the array using this function. */
 void PUPL_Array_free(PUPL_Array array);
 
 #ifdef __cplusplus

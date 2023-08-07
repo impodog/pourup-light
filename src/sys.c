@@ -47,7 +47,9 @@ PUPL_CallStack PUPL_parse(const char *filename) {
         return NULL;
     }
     if (PUPL_run(call_stack, block)) {
+        PUPL_Block_free(block);
         return NULL;
     }
+    PUPL_Block_free(block);
     return call_stack;
 }

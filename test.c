@@ -24,7 +24,8 @@ int main(int argc, char **argv) {
         printf("Error: %s\n", PUPL_get_error());
         return 1;
     }
-    //PUPL_Environ_show(PUPL_CallStack_bottom(call_stack));
+    PUPL_Environ_show(PUPL_CallStack_bottom(call_stack));
+    PUPL_CallStack_free(call_stack);
     PUPL_quit();
     return 0;
 }

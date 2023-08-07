@@ -22,12 +22,22 @@ namespace ppyl {
         }
     }
 
+    void pull_args(const string_vec &args, string_vec &result) {
+        for (const auto &arg: args) {
+            result.push_back(">" + arg);
+        }
+    }
+
     void macro_push(const string_vec &args, string_vec &result) {
         push_args(args, result);
     }
 
     void macro_rpush(const string_vec &args, string_vec &result) {
         rpush_args(args, result);
+    }
+
+    void macro_pull(const string_vec &args, string_vec &result) {
+        pull_args(args, result);
     }
 
     void macro_array(string_vec args, string_vec &result) {
@@ -67,6 +77,7 @@ namespace ppyl {
     macro_func_map macro_map = {
             {"PUSH",  macro_push},
             {"QUEUE", macro_rpush},
+            {"PULL",  macro_pull},
             {"ARRAY", macro_array},
             {"CALL",  macro_call},
             {"SHOW",  macro_show},

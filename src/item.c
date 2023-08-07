@@ -8,10 +8,10 @@
 extern "C" {
 #endif
 
-PUPL_Item PUPL_Item_new_integer(PUPL_Integer value) {
+PUPL_Item PUPL_Item_new_int(PUPL_Int value) {
     PUPL_Item item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
-    item->type = PUPL_INTEGER_T;
-    item->value.integer_v = value;
+    item->type = PUPL_INT_T;
+    item->value.int_v = value;
     return item;
 }
 
@@ -70,8 +70,8 @@ PUPL_Item PUPL_Item_copy(PUPL_Item item) {
         PUPL_Item new_item = (PUPL_Item) malloc(sizeof(struct PUPL_Item_));
         new_item->type = item->type;
         switch (item->type) {
-            case PUPL_INTEGER_T:
-                new_item->value.integer_v = item->value.integer_v;
+            case PUPL_INT_T:
+                new_item->value.int_v = item->value.int_v;
                 break;
             case PUPL_PTR_T:
                 new_item->value.ptr_v = item->value.ptr_v;
@@ -109,7 +109,7 @@ PUPL_Item PUPL_Item_copy(PUPL_Item item) {
 void PUPL_Item_free(PUPL_Item item) {
     if (item) {
         switch (item->type) {
-            case PUPL_INTEGER_T:
+            case PUPL_INT_T:
             case PUPL_PTR_T:
             case PUPL_FLOAT_T:
             case PUPL_BOOL_T:
@@ -131,8 +131,8 @@ void PUPL_Item_free(PUPL_Item item) {
 
 void PUPL_Item_show(PUPL_Item item) {
     switch (item->type) {
-        case PUPL_INTEGER_T:
-            printf("%lld", item->value.integer_v);
+        case PUPL_INT_T:
+            printf("%lld", item->value.int_v);
             break;
         case PUPL_PTR_T:
             printf("0x%llx", item->value.ptr_v);

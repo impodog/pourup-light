@@ -87,6 +87,8 @@ PUPL_Bool PUPL_op_left_bracket(PUPL_CallStack call_stack, PUPL_ConstString arg) 
         PUPL_Environ_set_left_bracket(env, item);
         return 0;
     }
+    PUPL_Item_free(item);
+
     char buf[PUPL_MAX_LINE_LENGTH];
     sprintf_s(buf, PUPL_MAX_LINE_LENGTH, "When using left bracket, item \"%s\" not found", arg);
     PUPL_set_error(buf);
@@ -96,8 +98,8 @@ PUPL_Bool PUPL_op_left_bracket(PUPL_CallStack call_stack, PUPL_ConstString arg) 
 PUPL_Bool PUPL_op_right_bracket(PUPL_CallStack call_stack, PUPL_ConstString arg) {
     PUPL_Environ env = PUPL_CallStack_top(call_stack);
     size_t length = vector_size(env->stack);
-    if (env->left_bracket_v->type == PUPL_INTEGER_T) {
-        size_t size = env->left_bracket_v->value.integer_v;
+    if (env->left_bracket_v && env->left_bracket_v->type == PUPL_INT_T) {
+        size_t size = env->left_bracket_v->value.int_v;
         if (length >= size) {
             PUPL_Array arr = PUPL_Array_new();
             size_t i;

@@ -39,8 +39,10 @@ PUPL_Function PUPL_FunctionMap_find(PUPL_ConstString name);
 
 
 
+/* Set the error message stored. The message IS duplicated. */
 void PUPL_set_error(const char *msg);
 
+/* Get the error message stored. The message is NOT duplicated */
 const char *PUPL_get_error();
 
 #ifdef __cplusplus

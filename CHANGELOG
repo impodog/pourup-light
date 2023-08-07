@@ -1,3 +1,9 @@
+v0.3.0
+- Add README.md
+- Fix some memory leaks in pupl and add more comments
+- Add PULL macro in ppyl
+- Minor changes in naming
+
 v0.2.0
 - Allow using positive and negative numbers
 - Add macros and json parser for ppyl compiler

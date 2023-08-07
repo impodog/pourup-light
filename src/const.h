@@ -20,7 +20,7 @@ extern "C" {
 
 #define PUPL_MAX_LINE_LENGTH 1024
 
-#define PUPL_VERSION "0.1.0"
+#define PUPL_VERSION "0.3.0"
 
 
 typedef char PUPL_Operator;
@@ -30,7 +30,7 @@ typedef PUPL_String *PUPL_StringVec;
 typedef PUPL_ConstString *PUPL_ConstStringVec;
 typedef hashmap *PUPL_HashMap;
 
-typedef long long PUPL_Integer;
+typedef long long PUPL_Int;
 typedef uintptr_t PUPL_Ptr;
 typedef double PUPL_Float;
 typedef unsigned char PUPL_Bool;

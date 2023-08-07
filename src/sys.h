@@ -8,8 +8,10 @@
 #include "operation.h"
 #include "reader.h"
 
+/* ALWAYS call this BEFORE any other functions. */
 void PUPL_init();
 
+/* ALWAYS call this AFTER any other functions. */
 void PUPL_quit();
 
 /*This returns NULL when the file does not exist, or pupl cannot parse the file.*/
@@ -17,7 +19,7 @@ PUPL_Block PUPL_Block_parse(const char *filename);
 
 PUPL_Bool PUPL_run(PUPL_CallStack call_stack, PUPL_Block block);
 
-/*This returns NULL when the file does not exist, pupl cannot parse the file, or the file causes an error.\
+/*This returns NULL when the file does not exist, pupl cannot parse the file, or the file causes an error.
  * It is recommended to use this to parse a .pupl file*/
 PUPL_CallStack PUPL_parse(const char *filename);
 
