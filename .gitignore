@@ -3,3 +3,6 @@ build
 **/test
 **/.idea
 **/.vscode
+**/.DS_Store
+/run_ppyl
+/run_test

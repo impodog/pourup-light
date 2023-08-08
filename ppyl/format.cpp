@@ -9,7 +9,8 @@ namespace ppyl {
         string result;
         for (auto c: str) {
             if (is_escape) {
-                result.push_back(to_escaped(c));
+                result.push_back('\\');
+                result.push_back(c);
                 is_escape = false;
                 continue;
             }

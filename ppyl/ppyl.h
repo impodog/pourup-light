@@ -24,9 +24,7 @@ namespace ppyl {
 
     bool is_spaces(const std::string &str);
 
-    char to_escaped(char c);
-
-    std::string to_unescaped(char c);
+    string to_unescaped(char c);
 
     string_vec split(const string &str, char c);
 

@@ -39,19 +39,6 @@ namespace ppyl {
         return std::all_of(str.begin(), str.end(), is_space);
     }
 
-    char to_escaped(char c) {
-        switch (c) {
-            case '\n':
-                return 'n';
-            case '\r':
-                return 'r';
-            case '\t':
-                return 't';
-            default:
-                return c;
-        }
-    }
-
     string to_unescaped(char c) {
         switch (c) {
             case '\n':
@@ -60,6 +47,8 @@ namespace ppyl {
                 return "\\r";
             case '\t':
                 return "\\t";
+            case '\\':
+                return "\\\\";
             default:
                 string result;
                 result.push_back(c);

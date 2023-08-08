@@ -21,13 +21,13 @@
 #define sprintf_s snprintf
 #endif
 
+#define PUPL_MAX_LINE_LENGTH 1024
+
+#define PUPL_VERSION "0.4.0"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define PUPL_MAX_LINE_LENGTH 1024
-
-#define PUPL_VERSION "0.3.1"
 
 
 typedef char PUPL_Operator;

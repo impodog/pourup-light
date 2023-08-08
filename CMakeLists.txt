@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.26)
 set(CMAKE_C_STANDARD 11)
 
 project(pourup_light)
+add_compile_definitions(__HASHMAP_REMOVABLE)
 add_library(pourup_light SHARED
         src/c-vector/vec.c
         src/c-hashmap/map.c

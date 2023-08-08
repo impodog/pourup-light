@@ -137,6 +137,32 @@ PUPL_Bool PUPL_op_return(PUPL_CallStack call_stack, PUPL_ConstString arg) {
     return 1;
 }
 
+PUPL_Bool PUPL_op_pop(PUPL_CallStack call_stack, PUPL_ConstString arg) {
+    PUPL_Environ env = PUPL_CallStack_top(call_stack);
+    PUPL_Item item = PUPL_Environ_pop(env, arg);
+    if (item) {
+        PUPL_Environ_push_stack(env, item);
+        return 0;
+    }
+    char buf[PUPL_MAX_LINE_LENGTH];
+    sprintf_s(buf, PUPL_MAX_LINE_LENGTH, "When using pop, item \"%s\" not found", arg);
+    PUPL_set_error(buf);
+    return 1;
+}
+
+PUPL_Bool PUPL_op_remove(PUPL_CallStack call_stack, PUPL_ConstString arg) {
+    PUPL_Environ env = PUPL_CallStack_top(call_stack);
+    PUPL_Item item = PUPL_Environ_pop(env, arg);
+    if (item) {
+        PUPL_Item_free(item);
+        return 0;
+    }
+    char buf[PUPL_MAX_LINE_LENGTH];
+    sprintf_s(buf, PUPL_MAX_LINE_LENGTH, "When using remove, item \"%s\" not found", arg);
+    PUPL_set_error(buf);
+    return 1;
+}
+
 void PUPL_Operation_init() {
     size_t i;
     memset(PUPL_operations, 0, PUPL_OPERATION_TABLE_SIZE * sizeof(PUPL_Operation));
@@ -149,6 +175,8 @@ void PUPL_Operation_init() {
     PUPL_operations['['] = PUPL_op_left_bracket;
     PUPL_operations[']'] = PUPL_op_right_bracket;
     PUPL_operations['='] = PUPL_op_return;
+    PUPL_operations['-'] = PUPL_op_pop;
+    PUPL_operations['~'] = PUPL_op_remove;
 }
 
 void PUPL_Operation_free() {

@@ -29,6 +29,11 @@ void PUPL_Environ_free(PUPL_Environ env);
  * This function will free the previous value if the key already exists. */
 void PUPL_Environ_set(PUPL_Environ env, PUPL_ConstString key, PUPL_Item value);
 
+/* This pops a key-value pair from the environment.
+ * This function will does NOT free the value.
+ * Returns the value if key exists, NULL otherwise. */
+PUPL_Item PUPL_Environ_pop(PUPL_Environ env, PUPL_ConstString key);
+
 /* Creates a sub-environment and returns it.
  * If the key already exists and a sub-environment is already created, then it returns the sub-environment.
  * If the key already exists and the value is not a sub-environment, then it returns NULL.

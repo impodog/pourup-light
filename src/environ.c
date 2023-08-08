@@ -44,6 +44,20 @@ void PUPL_Environ_set(PUPL_Environ env, PUPL_ConstString key, PUPL_Item value) {
     hashmap_set(env->items, strdup(key), key_len, (uintptr_t) value);
 }
 
+void PUPL_Environ_pop_callback(void *key, size_t ksize, uintptr_t value, void *usr) {
+    free(key);
+}
+
+PUPL_Item PUPL_Environ_pop(PUPL_Environ env, PUPL_ConstString key) {
+    uintptr_t prev;
+    if (hashmap_get(env->items, key, strlen(key), &prev)) {
+        hashmap_remove_free(env->items, key, strlen(key), PUPL_Environ_pop_callback, NULL);
+        return (PUPL_Item) prev;
+    } else {
+        return NULL;
+    }
+}
+
 PUPL_Environ PUPL_Environ_sub(PUPL_Environ env, PUPL_ConstString key) {
     uintptr_t prev;
     if (hashmap_get(env->items, key, strlen(key), &prev)) {

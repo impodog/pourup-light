@@ -296,6 +296,12 @@ This does NOT copy the value. You may want to copy the value before calling this
 This function will free the previous value if the key already exists. */
 void PUPL_Environ_set(PUPL_Environ env, PUPL_ConstString key, PUPL_Item value);
 
+/* This pops a key-value pair from the environment.
+ * This function will does NOT free the value.
+ * Returns the value if key exists, NULL otherwise. */
+PUPL_Item PUPL_Environ_pop(PUPL_Environ env, PUPL_ConstString key);
+
+
 
 /* These following two functions controls values in the stack. See language tutorial for details. */
 /* This does NOT copy the value. You may want to copy the value before calling this function. */
@@ -536,6 +542,8 @@ PUPL has the following built-in commands to describe a data structure.
 | .    | Call          | A function name                | Get a user-defined function and call it with the current call stack. |
 | =    | Return        | A key name                     | Save the return value temporarily in current environ. After ending, push the value into the outer stack. |
 | S    | Show          | A key name                     | Find the value of the name, and show it in `stdout`.         |
+| -    | Pop           | A key name                     | Pop the key-value pair from the environ, and push the value into the stack |
+| ~    | Remove        | A key name                     | Pop the key-value pair from the environ, and free the item |
 
 Now, you can create a test PUPL file:
 
